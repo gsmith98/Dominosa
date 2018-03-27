@@ -1,0 +1,124 @@
+Elana Stroud - estroud1
+Graham Smith - gsmith98
+
+Grad Project: Dominosa
+
+The source folder contains five java files: 
+
+-Dominosa.java
+-ParallelDominosa.java
+    -ParallelPairMapping.java
+    -ParallelSuperGrid.java
+-PuzzleCreator.java
+
+The source folder contains one bash script"
+-creator_bash.sh
+
+Each of these files is explained below.
+
+-------------- Dominosa.java --------------
+
+This file represents a serial implementation of 
+the Dominosa program. This program reads an input
+file representing a puzzle grid and measures the
+time it takes to solve.
+
+The usage is below:
+
+    To compile: javac Dominosa.java
+    To run:     java Dominosa 5 ./puzzles/5puzzle1.txt
+
+5puzzle1.txt is a text file that holds a puzzle
+where n = 5. The input file must be a grid that corresponds
+to 'n' or the program will not run correctly.
+
+'n' is the max number that a either digit of a pair in the
+puzzle can be. For example, if 'n' = 2, the follow pairs for 
+be valid:
+
+(0,0)
+(0,1), (1,1)
+(0,2), (2,1), (2,2)
+
+This would result in a grid of (n+1)x(n+2) = 3x4
+We have provided some sample puzzles in the ./puzzles/
+directory to run the Domonisa.java program.
+
+
+-------------- ParallelDominosa.java --------------
+Uses:
+    -ParallelPairMapping.java
+    -ParallelSuperGrid.java
+
+This program is the parallel version of the program above.
+The solver code in solvePuzzle is separated into two parallel
+programs called ParallelPairMapping.java and ParallelSuperGrid.java.
+This two programs implement runnable and parallelize the solving
+of the puzzle.
+
+The ParallelDominosa program takes the same input as the
+serial implementation above with the addition of the number
+of threads desired. The output is the time taken to solve the
+puzzle with the given number of threads.  See below:
+
+    To compile: javac ParallelDominosa.java
+    To run:     java ParallelDominosa 5 ./puzzles/5puzzle1.txt 4
+
+The above command would run the ParallelDominosa solver
+using 4 cores and output how much time it takes to find
+the solution to the puzzle.
+
+
+-------------- PuzzleCreator.java --------------
+
+This program is a parallelized version of the createPuzzle()
+method in ParallelDominosa.java and Dominosa.java. This program
+splits the creation of each puzzle into seperate threads based
+on number of rows of the puzzle grid. As input, the main method
+takes 'n', the file name to write the grid to, and the number of
+threads to utilize.
+
+The program creates a solveable puzzle and writes it to a 
+to a text file. The following commands may used to compile
+and run:
+
+    To compile: javac PuzzleCreator.java
+    To run:     java PuzzleCreator 5 ./puzzles/5puzzle1.txt 4
+
+In this example, the PuzzleCreator will create a puzzle
+with up to value of five in any pair (n == 5) and a grid 
+of size 6x7 using four threads. The program also outputs
+the time taken to create the puzzle and how many different
+puzzles it had to produce before finding one that was 
+solveable.
+
+For example, the output: 
+    "17 5" means that a solveable puzzle was found in 
+    17 milliseconds and 5 different puzzles had to be created
+    before finding one that was solveable.
+
+The puzzle created can be used with ParallelDominsa.java
+in order to measure how long it takes to solve in parallel.
+
+
+-------------- creator_bash.sh --------------
+
+This bash script can be run with the following
+commands in the source directory:
+
+./creator_bash.sh
+
+The script runs two experiments. The first measures
+the time and and try-number it takes to create
+a solveable puzzle with varying values of 'n'.
+This experiment is run for a single thread, four
+threads and eight threads.
+
+The second experiment measures how long the PuzzleCreator
+takes to create solveable puzzle where n=10. This experiment
+outputs the time and number of tries take for varying number
+of threads. The whole loop is repeated five times to reduce
+experimental variability.
+
+Both experiments write to a file that records the data collected
+in order to be analyzed later.
